@@ -7,7 +7,7 @@ userModel.getUsersFromDB = function (callback) {
     db(function(db) {
         db.collection(collection, function(err, collection) {
         	// log.debug(collection)
-            collection.findOne({}, function(err, result) {
+            collection.find().toArray(function(err, result) {
                 callback(err, result);
             });
         });
