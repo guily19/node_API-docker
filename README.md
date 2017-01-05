@@ -10,6 +10,6 @@ This command have to be run into the repository folder. The command above will g
 
 #### How to create the Docker container?
 
-##### docker run -p 33080:8080 --link MongoDB_server -d guillem:myApi_image
+##### docker run --name MyAPI_server -v $PWD/src:/usr/src/app -p 33080:8080 --link MongoDB_server -d guillem:myApi_image
 
 The flag --link MongoDB_server allow us to connect this Docker container with MongoDB_server. It is necessary to have the container MongoDB_server running before run this one
