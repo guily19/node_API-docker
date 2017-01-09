@@ -9,6 +9,10 @@
   },
   "dependencies": {
     "express": "^4.13.3",
-    "mongoose" : "*"
+    "express-session": "*",
+    "mongoose" : "*",
+    "passport-local-mongoose": "*",
+    "passport": "*",
+    "cookie-parser": "*"
   }
 }

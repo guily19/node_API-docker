@@ -2,7 +2,7 @@ var config = {};
 
 config.db = {
     name: 'test',
-    host: 'MongoDB_server',
+    host: 'localhost',
     port: 27017
 }
 
