@@ -34,6 +34,7 @@ usersController.register = function (req, res){
 }
 
 usersController.login = function (req, res, next) {
+	console.log("User ",req.body.username, "is login to the platform")
     account.authenticate()(req.body.username, req.body.password, function (err, user, options) {
         if (err) return next(err);
         if (user === false) {
