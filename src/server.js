@@ -1,6 +1,5 @@
 'use strict';
 var mongoose = require('mongoose')
-var bodyParser = require('body-parser');
 var config = require('./config/config')
 var users = require('./controllers/users')
 const express = require('express')

@@ -1,7 +1,7 @@
 var config = {};
 
 config.db = {
-    name: 'test',
+    name: 'samarco',
     host: 'localhost',
     port: 27017
 }

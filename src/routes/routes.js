@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 
 var account = require('../models/account'); 
 var users = require('../controllers/users');
+var tiles = require('../controllers/tiles');
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -35,6 +36,8 @@ exports = module.exports = function(app) {
 
 	    app.get('/login', users.getLogin);
         app.get('/users', users.getAllUsers);
+
+        app.get('/tiles/:deliveryCode/:propertyCode/:z/:x/:y', tiles.getTileZXY);
 
     } catch (e) {
         console.log(e);
