@@ -34,30 +34,35 @@ pointsTile.getTileFromDB = function(deliveryCode, propertyCode, coords, callback
     };
 
     var project = legend.getMongoProjectiondLegend(deliveryCode, propertyCode);
-    basicProject['$project']["ctx.fillStyle"] = legend.getLegendStyleProjection(deliveryCode, propertyCode);
+    legend.getLegendStyleProjection(deliveryCode, propertyCode, function(data){
+        basicProject['$project']["ctx.fillStyle"] = data
+        queryAggr = [match, basicProject];
 
-    queryAggr = [match, basicProject];
+        console.log("************************************************************");
+        console.log("queryAggr = ",queryAggr);
+        console.log("************************************************************");
 
-    var start = new Date().getTime();
-    db(function(db) {
-        db.collection(colName, function(err, collection) {
-            if (err) {
-                log.error(err);
-            } else {
-                collection.aggregate(queryAggr, {
-                    allowDiskUse: true,
-                    cursor: {
-                        batchSize: 100
-                    }
-                }).toArray(function(err, points) {
-                    if (err) {
-                        log.error(err);
-                    } else {
-                        log.debug(points.length, "points in ", new Date().getTime() - start);
-                        callback(err, points);
-                    }
-                });
-            }
+        var start = new Date().getTime();
+        db(function(db) {
+            db.collection("points", function(err, collection) {
+                if (err) {
+                    log.error(err);
+                } else {
+                    collection.aggregate(queryAggr, {
+                        allowDiskUse: true,
+                        cursor: {
+                            batchSize: 100
+                        }
+                    }).toArray(function(err, points) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log(points.length, "points in ", new Date().getTime() - start);
+                            callback(err, points);
+                        }
+                    });
+                }
+            });
         });
     });
 }

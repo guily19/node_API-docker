@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var Delivery = new Schema({
+var deliverySchema = new Schema({
     title: String,
     from: String,
     to: String,
@@ -9,14 +9,16 @@ var Delivery = new Schema({
     code: String,
     satelite: String,
     daliveryDate: String,
-    numberScenes: number,
+    numberScenes: Number,
     category: String,
     properties: Array,
-    type: String
+    type: String,
+    legendObj: Object
 },{
     collection : 'deliveries'
 });
 
 
+deliveryModel = mongoose.model("deliverySchema", deliverySchema);
 
-module.exports = mongoose.model("Delivery", delivery);
+module.exports = deliveryModel;
