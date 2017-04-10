@@ -1,4 +1,6 @@
-var legend = require('../controllers/legend'); 
+var legend = require('../controllers/legend');
+var config = require('../config/config')
+var maptile = require('maptile'); 
 var db = require('./db');
 
 var pointsTile = {};
@@ -67,30 +69,30 @@ pointsTile.getTileFromDB = function(deliveryCode, propertyCode, coords, callback
     });
 }
 
-pointsTile.drawTiletoMap = function(deliveryCode, propertyCode, bbox) {
+var drawTiletoMap = function(deliveryCode, propertyCode, bbox, filteredPoints, callback) {
 	 var coolMap = new maptile.Map({
         cache: false,
-        path: path_tile,
+        path: config.path_tile,
         builder: function(tile, next) {
-            tile.drawGeojson(filteredPoints, coords.z, deliv, {}, next);
+            tile.drawGeojson(filteredPoints, bbox.z, deliveryCode, {}, next);
         }
     });
-    coolMap.getTile(coords, function(err, buffer) {
+    coolMap.getTile(bbox, function(err, buffer) {
         if (err) {
-            console.log(err)
+            console.log('Err: ',err);
         } else {
             //var end = new Date().getTime();
             //log.debug('TOTAL query+tileGeneration (in ms):',end-begin);
-            res.send(buffer);
+            callback(buffer);
         }
     });
 }
 
 
-pointsTile.generateTile = function(deliveryCode, propertyCode, bbox) {
+pointsTile.generateTile = function(deliveryCode, propertyCode, bbox, callback) {
         //custom behavior here
 	this.getTileFromDB(deliveryCode, propertyCode, bbox, function(err, filteredPoints){
-		this.drawTiletoMap(deliveryCode, propertyCode, bbox);
+		drawTiletoMap(deliveryCode, propertyCode, bbox, filteredPoints, callback);
 	});
 }
 

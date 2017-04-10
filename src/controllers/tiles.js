@@ -27,7 +27,9 @@ tilesController.getTileZXY = function(req, res){
             var margin = 0.01;
             var tileBbox = tile2Bbox(x, y, z);
             var tileBboxwithMargin = addMarginsToBbox(tileBbox, margin);
-            generator.generateTile(deliveryCode, propertyCode, tileBboxwithMargin);
+            generator.generateTile(deliveryCode, propertyCode, tileBboxwithMargin, function(tile){
+                res.send(tile);
+            });
         } else {
             log.debug("exist and isn't filtered THEN SEND path_tile");
             res.sendfile(path_tile);
