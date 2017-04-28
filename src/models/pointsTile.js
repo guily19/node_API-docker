@@ -40,9 +40,9 @@ pointsTile.getTileFromDB = function(deliveryCode, propertyCode, coords, callback
         basicProject['$project']["ctx.fillStyle"] = data
         queryAggr = [match, basicProject];
 
-        console.log("************************************************************");
-        console.log("queryAggr = ",queryAggr);
-        console.log("************************************************************");
+        // console.log("************************************************************");
+        // console.log("queryAggr = ",queryAggr);
+        // console.log("************************************************************");
 
         var start = new Date().getTime();
         db(function(db) {

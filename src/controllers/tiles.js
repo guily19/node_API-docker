@@ -28,6 +28,7 @@ tilesController.getTileZXY = function(req, res){
             var tileBbox = tile2Bbox(x, y, z);
             var tileBboxwithMargin = addMarginsToBbox(tileBbox, margin);
             generator.generateTile(deliveryCode, propertyCode, tileBboxwithMargin, function(tile){
+                // console.log("tile:",tile);
                 res.send(tile);
             });
         } else {
