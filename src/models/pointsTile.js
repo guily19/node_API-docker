@@ -5,7 +5,7 @@ var db = require('./db');
 
 var pointsTile = {};
 
-pointsTile.getTileFromDB = function(deliveryCode, propertyCode, coords, callback) {
+pointsTile.getTileFromDB = function(deliveryCode, propertyCode, coords, zoom, callback) {
 	var bb = {
         north: Math.max(coords[0][1], coords[1][1], coords[2][1], coords[3][1]),
         south: Math.min(coords[0][1], coords[1][1], coords[2][1], coords[3][1]),
@@ -35,7 +35,7 @@ pointsTile.getTileFromDB = function(deliveryCode, propertyCode, coords, callback
         }
     };
 
-    var project = legend.getMongoProjectiondLegend(deliveryCode, propertyCode);
+    // var project = legend.getMongoProjectiondLegend(deliveryCode, propertyCode);
     legend.getLegendStyleProjection(deliveryCode, propertyCode, function(data){
         basicProject['$project']["ctx.fillStyle"] = data
         queryAggr = [match, basicProject];
@@ -69,30 +69,30 @@ pointsTile.getTileFromDB = function(deliveryCode, propertyCode, coords, callback
     });
 }
 
-var drawTiletoMap = function(deliveryCode, propertyCode, bbox, filteredPoints, callback) {
-	 var coolMap = new maptile.Map({
+var drawTiletoMap = function(deliveryCode, propertyCode, bbox, zoom, filteredPoints, callback) {
+     var coolMap = new maptile.Map({
         cache: false,
         path: config.path_tile,
         builder: function(tile, next) {
-            tile.drawGeojson(filteredPoints, bbox.z, deliveryCode, {}, next);
+            tile.drawGeojson(filteredPoints, zoom, deliveryCode, {}, next);
         }
     });
+    let begin = new Date().getTime();
     coolMap.getTile(bbox, function(err, buffer) {
         if (err) {
             console.log('Err: ',err);
         } else {
-            //var end = new Date().getTime();
-            //log.debug('TOTAL query+tileGeneration (in ms):',end-begin);
+            let end = new Date().getTime();
             callback(buffer);
         }
     });
 }
 
 
-pointsTile.generateTile = function(deliveryCode, propertyCode, bbox, callback) {
+pointsTile.generateTile = function(deliveryCode, propertyCode, bbox, zoom, callback) {
         //custom behavior here
-	this.getTileFromDB(deliveryCode, propertyCode, bbox, function(err, filteredPoints){
-		drawTiletoMap(deliveryCode, propertyCode, bbox, filteredPoints, callback);
+	this.getTileFromDB(deliveryCode, propertyCode, bbox, zoom, function(err, filteredPoints){
+		drawTiletoMap(deliveryCode, propertyCode, bbox, zoom, filteredPoints, callback);
 	});
 }
 

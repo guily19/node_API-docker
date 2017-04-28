@@ -12,8 +12,6 @@ var serviceDescriptions = [
 ];
 
 tileBehavior.getGenerator = function (deliveryType) {
-    console.log(serviceDescriptions);
-    console.log(deliveryType);
     //asuming you have underscore, otherwise, just iterate the array to look for the proper service
     return _.find(serviceDescriptions, {deliveryType: deliveryType}).service; 
  };

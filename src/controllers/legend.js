@@ -109,7 +109,7 @@ Legend.getMongoProjectiondLegend = function(deliveryCode, propertyCode) {
         }
     };
 
-    var delivery = deliveries.getDeliveryByCode(deliveryCode, propertyCode, function(legend){
+    var delivery = deliveries.getDeliveryLegendObjectByCode(deliveryCode, propertyCode, function(legend){
         for (var i = 0; i < legend.length; i++) {
             if (i === 0) {
                 project['$project']["ctx.fillStyle"]['$concat'].push({
@@ -157,8 +157,8 @@ Legend.getLegendStyleProjection = function(deliveryCode, propertyCode, callback)
             '_id': 0
         }
     };
-    var delivery = deliveries.getDeliveryByCode(deliveryCode, propertyCode, function(legend){
-        for (var i = 0; i < legend.length; i++) {
+    var delivery = deliveries.getDeliveryLegendObjectByCode(deliveryCode, propertyCode, function(legend){
+        for (let i = 0; i < legend.length; i++) {
             if (i === 0) {
                 project['$project']["ctx.fillStyle"]['$concat'].push({
                     $cond: [{
@@ -190,7 +190,6 @@ Legend.getLegendStyleProjection = function(deliveryCode, propertyCode, callback)
 
             }
         }
-        console.log("project ->",project['$project']["ctx.fillStyle"]);
         callback(project['$project']["ctx.fillStyle"]);
     });
 }
@@ -211,7 +210,6 @@ Legend.init = function() {
                     deliveriesArray[i].properties[j].legend = { type : "dots" };
                 }
                 var legendObj = createLegendObject(deliveriesArray[i].properties[j].legend, deliveriesArray[i].properties[j].code);
-                //console.log("legendObj ->",legendObj);
                 deliveries.setLegendObjtoDB(deliveriesArray[i].code, deliveriesArray[i].properties[j].code, legendObj);
             }
         }

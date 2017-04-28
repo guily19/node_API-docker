@@ -2,7 +2,7 @@ var Deliveries = {};
 var Delivery = require('../models/delivery');
 
 
-Deliveries.getDeliveryByCode = function(deliveryCode, propertyCode,  callback){
+Deliveries.getDeliveryLegendObjectByCode = function(deliveryCode, propertyCode,  callback){
 	var legend = undefined;
 	var delivery = Delivery.findOne({ 'code': deliveryCode }, function(err,data){
 		if(err){
@@ -12,7 +12,7 @@ Deliveries.getDeliveryByCode = function(deliveryCode, propertyCode,  callback){
 			properties = data.properties;
 			for(var i = 0; i < properties.length; ++i){
 				if(properties[i].code === propertyCode){
-					callback(properties[i].legend);
+					callback(properties[i].legendObj);
 				}
 			}
 		}
@@ -45,7 +45,13 @@ Deliveries.getScaleByCode = function(deliveryCode){
 }
 
 Deliveries.setLegendObjtoDB = function(deliveryCode, propertyCode, legendObj){
-	var delivery = Delivery.update({'code' : deliveryCode},{'$set': { 'legendObj' : legendObj}});
+	var delivery = Delivery.update({'code' : deliveryCode, 'properties.code' : propertyCode},{$set:{ 'properties.$.legendObj' : legendObj}},function(err, message){
+		if(err){
+			console.log(err)
+		} else {
+			console.log(message)
+		}
+	});
 }
 
 
